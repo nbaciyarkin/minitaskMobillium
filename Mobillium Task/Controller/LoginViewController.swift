@@ -65,7 +65,7 @@ class LoginViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "Name"
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .white
+        textField.backgroundColor = .secondarySystemBackground
         textField.layer.cornerRadius = 8
         textField.layer.masksToBounds = true
         return textField
@@ -75,7 +75,7 @@ class LoginViewController: UIViewController {
         let textField = UITextField()
         textField.placeholder = "Password"
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .white
+        textField.backgroundColor = .secondarySystemBackground
         textField.layer.cornerRadius = 8
         textField.layer.masksToBounds = true
         textField.isSecureTextEntry = true
@@ -85,7 +85,7 @@ class LoginViewController: UIViewController {
     private let logInbutton:UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .systemCyan
+        button.backgroundColor = .cyan
         button.setTitle("LogIn", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 8
@@ -99,6 +99,9 @@ class LoginViewController: UIViewController {
         view.backgroundColor = .systemPink
         view.addSubview(nameTf)
         view.addSubview(password)
+        
+        nameTf.delegate = self
+        password.delegate = self
         
         configureVStackView()
         
@@ -181,7 +184,8 @@ class LoginViewController: UIViewController {
             verticalStackView.topAnchor.constraint(equalTo: password.bottomAnchor, constant: 20),
             verticalStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 20),
             verticalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            verticalStackView.heightAnchor.constraint(equalToConstant: 80)
+            verticalStackView.heightAnchor.constraint(equalToConstant: 60)
+            
         ]
         NSLayoutConstraint.activate(stackViewConstraints)
     }
@@ -230,26 +234,33 @@ class LoginViewController: UIViewController {
     
     private func applyConstraints(){
         let nameTfConstraints = [
-            nameTf.topAnchor.constraint(equalTo: view.topAnchor, constant: 200),
+            nameTf.topAnchor.constraint(equalTo: view.topAnchor, constant: 65),
             nameTf.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
             nameTf.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
             nameTf.widthAnchor.constraint(equalToConstant: 250),
             nameTf.heightAnchor.constraint(equalToConstant: 35)
         ]
         let passwordConstraints = [
-            password.topAnchor.constraint(equalTo: nameTf.topAnchor, constant: 80),
+            password.topAnchor.constraint(equalTo: nameTf.bottomAnchor, constant: 20),
             password.leadingAnchor.constraint(equalTo: nameTf.leadingAnchor),
             password.trailingAnchor.constraint(equalTo: nameTf.trailingAnchor),
             password.heightAnchor.constraint(equalToConstant: 35)
         ]
         let logInButtonConstrants = [
             logInbutton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logInbutton.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor,constant: 45),
+            logInbutton.topAnchor.constraint(equalTo: view.bottomAnchor,constant: -130),
             logInbutton.widthAnchor.constraint(equalToConstant: 120),
-            logInbutton.heightAnchor.constraint(equalToConstant: 45)
+            logInbutton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80),
+            logInbutton.heightAnchor.constraint(equalToConstant: 20)
         ]
         NSLayoutConstraint.activate(nameTfConstraints)
         NSLayoutConstraint.activate(passwordConstraints)
         NSLayoutConstraint.activate(logInButtonConstrants)
+    }
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
 }

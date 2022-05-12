@@ -7,13 +7,13 @@
 
 import UIKit
 
-class RegisterViewController: UIViewController {
+class RegisterViewController: UIViewController, UITextViewDelegate {
     
     private let nameTf: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Name"
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .white
+        textField.backgroundColor = .secondarySystemBackground
         textField.layer.cornerRadius = 8
         textField.layer.masksToBounds = true
         return textField
@@ -22,8 +22,8 @@ class RegisterViewController: UIViewController {
     private let emailTf: UITextField = {
         let textField = UITextField()
         textField.placeholder = "E-mail"
+        textField.backgroundColor = .secondarySystemBackground
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .white
         textField.layer.cornerRadius = 8
         textField.layer.masksToBounds = true
         return textField
@@ -32,8 +32,8 @@ class RegisterViewController: UIViewController {
     private let password: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Password"
+        textField.backgroundColor = .secondarySystemBackground
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .white
         textField.layer.cornerRadius = 8
         textField.layer.masksToBounds = true
         textField.isSecureTextEntry = true
@@ -43,8 +43,8 @@ class RegisterViewController: UIViewController {
     private let retypePassword: UITextField = {
         let textField = UITextField()
         textField.placeholder = "ReTypePassword"
+        textField.backgroundColor = .secondarySystemBackground
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .white
         textField.layer.cornerRadius = 8
         textField.layer.masksToBounds = true
         textField.isSecureTextEntry = true
@@ -75,6 +75,13 @@ class RegisterViewController: UIViewController {
         view.addSubview(retypePassword)
         view.addSubview(registerbutton)
         
+        
+        //when I tried to run physical device I came across keyboard issue I deal with the textFliedDelegate methods
+        nameTf.delegate = self
+        emailTf.delegate = self
+        password.delegate = self
+        retypePassword.delegate = self
+
         applyConstraints()
     }
     
@@ -107,7 +114,7 @@ class RegisterViewController: UIViewController {
        
     private func applyConstraints(){
         let nameTfConstraints = [
-            nameTf.topAnchor.constraint(equalTo: view.topAnchor, constant: 300),
+            nameTf.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
             nameTf.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
             nameTf.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
             nameTf.widthAnchor.constraint(equalToConstant: 250),
@@ -115,31 +122,32 @@ class RegisterViewController: UIViewController {
         ]
         
         let emailTfConstraints = [
-            emailTf.topAnchor.constraint(equalTo: nameTf.topAnchor, constant: 80),
+            emailTf.topAnchor.constraint(equalTo: nameTf.topAnchor, constant: 45),
             emailTf.leadingAnchor.constraint(equalTo: nameTf.leadingAnchor),
             emailTf.trailingAnchor.constraint(equalTo: nameTf.trailingAnchor),
             emailTf.heightAnchor.constraint(equalToConstant: 35)
         ]
         
         let passwordConstraints = [
-            password.topAnchor.constraint(equalTo: emailTf.topAnchor, constant: 80),
+            password.topAnchor.constraint(equalTo: emailTf.topAnchor, constant: 45),
             password.leadingAnchor.constraint(equalTo: nameTf.leadingAnchor),
             password.trailingAnchor.constraint(equalTo: nameTf.trailingAnchor),
             password.heightAnchor.constraint(equalToConstant: 35)
         ]
         
         let rePasswordConstraints = [
-            retypePassword.topAnchor.constraint(equalTo: password.topAnchor, constant: 80),
+            retypePassword.topAnchor.constraint(equalTo: password.topAnchor, constant: 45),
             retypePassword.leadingAnchor.constraint(equalTo: nameTf.leadingAnchor),
             retypePassword.trailingAnchor.constraint(equalTo: nameTf.trailingAnchor),
-            retypePassword.heightAnchor.constraint(equalToConstant: 35)
+            retypePassword.heightAnchor.constraint(equalToConstant: 35),
+            
         ]
         
         let buttonConstraints = [
-            registerbutton.topAnchor.constraint(equalTo: retypePassword.topAnchor, constant: 80),
+            
             registerbutton.leadingAnchor.constraint(equalTo: nameTf.leadingAnchor, constant: 80),
             registerbutton.trailingAnchor.constraint(equalTo: nameTf.trailingAnchor, constant: -80),
-            registerbutton.heightAnchor.constraint(equalToConstant: 35),
+            registerbutton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30),
         ]
         
         NSLayoutConstraint.activate(nameTfConstraints)
@@ -147,5 +155,11 @@ class RegisterViewController: UIViewController {
         NSLayoutConstraint.activate(passwordConstraints)
         NSLayoutConstraint.activate(rePasswordConstraints)
         NSLayoutConstraint.activate(buttonConstraints)
+    }
+}
+
+extension RegisterViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
 }
